@@ -1,4 +1,4 @@
-package com.taskmind.user;
+package com.taskmind.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
