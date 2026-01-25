@@ -1,10 +1,11 @@
 package com.taskmind.userservice.service;
 
 import com.taskmind.userservice.dto.UserRequest;
+import com.taskmind.userservice.dto.UserResponse;
+import com.taskmind.userservice.mapper.UserMapper;
 import com.taskmind.userservice.model.User;
 import com.taskmind.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,17 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserMapper mapper;
 
-    public User createUser(UserRequest request) {
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .preferences(request.getPreferences())
-                .build();
-
-        return userRepository.save(user);
+    public UserResponse createUser(UserRequest request) {
+        User userRq = mapper.mapUserRequestToUser(request);
+        User userRs = userRepository.save(userRq);
+        return mapper.mapUserToUserResponse(userRs);
     }
 }

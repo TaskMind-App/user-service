@@ -1,6 +1,7 @@
 package com.taskmind.userservice.controller;
 
 import com.taskmind.userservice.dto.UserRequest;
+import com.taskmind.userservice.dto.UserResponse;
 import com.taskmind.userservice.model.User;
 import com.taskmind.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User registerUser(@Valid @RequestBody UserRequest userRequest) {
+    public UserResponse registerUser(@Valid @RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
     }
 }
