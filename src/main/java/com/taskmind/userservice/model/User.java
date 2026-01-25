@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private String id;
+    private Long id;
     private String firstName;
     @NotBlank(message = "Last name is required")
     private String lastName;

@@ -17,9 +17,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
     public UserResponse createUser(UserRequest request) {
         User userRq = mapper.mapUserRequestToUser(request);
+        userRq.setId(sequenceGeneratorService.generateSequence("users_sequence"));
         User userRs = userRepository.save(userRq);
         return mapper.mapUserToUserResponse(userRs);
     }
