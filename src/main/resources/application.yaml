@@ -8,6 +8,12 @@ spring:
     mongodb:
       uri: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@localhost:27017/${MONGO_DB}?authSource=admin
 
+application:
+  security:
+    jwt:
+      secret-key: ${TOKEN_SECRET_KEY}
+      expiration-time: ${TOKEN_EXPIRATION_TIME}
+
 eureka:
   client:
     serviceUrl:

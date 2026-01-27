@@ -6,6 +6,7 @@ import com.taskmind.userservice.dto.UserResponse;
 import com.taskmind.userservice.mapper.UserMapper;
 import com.taskmind.userservice.model.User;
 import com.taskmind.userservice.repository.UserRepository;
+import com.taskmind.userservice.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
     private final SequenceGeneratorService sequenceGeneratorService;
+    private final JwtService jwtService;
 
     public UserResponse createUser(UserRequest request) {
         User userRq = mapper.mapUserRequestToUser(request);
@@ -33,6 +35,14 @@ public class UserService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
-        return mapper.mapUserToUserResponse(user);
+
+        //map response
+        UserResponse userResponse = mapper.mapUserToUserResponse(user);
+
+        //generate token and map it to the response
+        String token = jwtService.generateToken(userResponse.getEmail(),userResponse.getId());
+        userResponse.setToken(token);
+
+        return userResponse;
     }
 }
