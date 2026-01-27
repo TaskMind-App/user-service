@@ -22,6 +22,9 @@ public class UserService {
     private final JwtService jwtService;
 
     public UserResponse createUser(UserRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists: " + request.getEmail());
+        }
         User userRq = mapper.mapUserRequestToUser(request);
         userRq.setId(sequenceGeneratorService.generateSequence("users_sequence"));
         User userRs = userRepository.save(userRq);
