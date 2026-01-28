@@ -8,8 +8,11 @@ import com.taskmind.userservice.model.User;
 import com.taskmind.userservice.repository.UserRepository;
 import com.taskmind.userservice.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +26,7 @@ public class UserService {
 
     public UserResponse createUser(UserRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists: " + request.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists: " + request.getEmail());
         }
         User userRq = mapper.mapUserRequestToUser(request);
         userRq.setId(sequenceGeneratorService.generateSequence("users_sequence"));
@@ -33,10 +36,10 @@ public class UserService {
 
     public UserResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
         }
 
         //map response
