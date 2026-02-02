@@ -3,7 +3,6 @@ package com.taskmind.userservice.controller;
 import com.taskmind.userservice.dto.LoginRequest;
 import com.taskmind.userservice.dto.UserRequest;
 import com.taskmind.userservice.dto.UserResponse;
-import com.taskmind.userservice.model.User;
 import com.taskmind.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
