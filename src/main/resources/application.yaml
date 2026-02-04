@@ -14,6 +14,9 @@ application:
     jwt:
       secret-key: ${TOKEN_SECRET_KEY}
       expiration-time: ${TOKEN_EXPIRATION_TIME}
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] %-5level %logger{36} - %msg%n"
 
 eureka:
   client:
