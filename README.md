@@ -1,12 +1,39 @@
-# TaskMind User Service
+# TaskMind - User Service
 
-## Overview
-The User Service handles user identity management, registration, and authentication flows within the TaskMind platform. It establishes a secure backbone guaranteeing that user data is well-protected and correctly linked across the distributed system.
+## 📝 Overview
+The **User Service** is a core microservice within the TaskMind platform, responsible for identity management, user registration, and secure authentication flows. It serves as the **Identity Provider (IdP)** and the source of truth for user data across the distributed system.
 
-## Key Responsibilities
-- Establishing and managing user profiles and sensitive credentials seamlessly.
-- Handling login/registration flows, resulting in the generation of secure session tokens (e.g., JWTs) to authorize subsequent API requests.
-- Providing identity verification endpoints internally, acting as the source of truth for user identification during task assignments and data storage.
+## 🚀 Key Responsibilities
+* **Identity Management:** Seamlessly managing user profiles and sensitive credentials.
+* **Authentication & Authorization:** Handling login/registration flows and issuing secure **JWT (JSON Web Tokens)** for stateless session management.
+* **Internal Verification:** Providing high-performance identity verification endpoints for the Gateway and Task services.
 
-## Architecture Context
-When a user logs in via the TaskMind UI, this service validates their credentials. The issued authentication token is then utilized by the Client and validated by the Gateway Service across all subsequent interactions to the Task Service and AI Agent Service.
+## 🛠 Tech Stack
+* **Language:** Java (OpenJDK 17+)
+* **Framework:** Spring Boot / Maven
+* **Security:** Spring Security & JWT
+* **Containerization:** Docker & Docker Compose
+* **Database:** PostgreSQL (or your chosen DB)
+
+## 🏗 Architecture Context
+Within the TaskMind ecosystem, the User Service acts as the security backbone:
+1.  **Login:** User authenticates via UI.
+2.  **Token Issuance:** User Service validates credentials and returns a signed JWT.
+3.  **Validation:** The **Gateway Service** intercepts incoming requests to the *Task Service* or *AI Agent Service*, validating the token against the User Service logic.
+
+## 🛣 API Endpoints (Quick Look)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/users/register` | Create a new user account |
+| `POST` | `/api/users/login` | Authenticate and receive JWT |
+| `GET` | `/api/users/me` | Retrieve current user profile (Protected) |
+
+## 📦 Getting Started
+To run this service locally using Docker:
+
+```bash
+# Build the image
+docker build -t taskmind-user-service .
+
+# Run the container
+docker run -p 8081:8081 taskmind-user-service
